@@ -1,13 +1,10 @@
 package com.example.rumpilstilstkin.lesson5;
 
-
-import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -40,19 +37,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         initDI();
+
         initView();
     }
 
-    private void initDI(){
+    private void initDI() {
         MainApp.getComponent().injectsToMainActivity(this);
-
-        MainApp.getComponentSingleton().inject(this);
-        Context context = MainApp.getComponentSingleton().appContext();
-        Log.d("Dto", context.getPackageCodePath());
     }
 
-    private void initView(){
+    private void initView() {
         mInfoTextView = findViewById(R.id.tvLoad);
         progressBar = findViewById(R.id.progressBar);
         btnLoad = findViewById(R.id.btnLoad);
@@ -75,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btnLoad:
                 loadData();
-                //startActivity(new Intent(this, Main2Activity.class));
                 break;
         }
     }
@@ -91,18 +85,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (response.isSuccessful() && response.body() != null) {
                     Model curModel;
                     mInfoTextView.append("\n Size = " + response.body().size() +
-                                         "\n-----------------");
+                            "\n-----------------");
                     for (int i = 0; i < response.body().size(); i++) {
                         curModel = response.body().get(i);
                         modelList.add(curModel);
                         mInfoTextView.append(
                                 "\nLogin = " + curModel.getLogin() +
-                                "\nId = " + curModel.getUserId() +
-                                "\nURI = " + curModel.getAvatar() +
-                                "\n-----------------");
+                                        "\nId = " + curModel.getUserId() +
+                                        "\nURI = " + curModel.getAvatar() +
+                                        "\n-----------------");
                     }
-                }
-                else {
+                } else {
                     String errorText = "onResponse error: " + response.code();
                     System.out.println(errorText);
                     mInfoTextView.setText(errorText);
